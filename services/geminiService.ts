@@ -2,6 +2,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { GeneratedPrompt, PromptStyle, MetadataResult } from "../types";
 
+// Updated to use process.env.API_KEY as per coding guidelines
 const defaultApiKey = process.env.API_KEY || '';
 const defaultAi = new GoogleGenAI({ apiKey: defaultApiKey });
 
@@ -32,8 +33,9 @@ export const generateMicrostockPrompts = async (
   customApiKey?: string
 ): Promise<GeneratedPrompt[]> => {
   
-  if (!customApiKey) {
-      throw new Error("Missing API Key. Please provide a valid Gemini API Key.");
+  // Allow if custom key is present OR if default key is present
+  if (!customApiKey && !defaultApiKey) {
+      throw new Error("Missing API Key. Please provide a valid Gemini API Key in settings.");
   }
 
   const ai = getAiClient(customApiKey);
